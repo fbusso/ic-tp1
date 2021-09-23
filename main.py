@@ -65,7 +65,6 @@ def perceptron(array):
 
 if __name__ == "__main__":
     # Lectura del set de entrenamiento
-
     features = pd.read_csv(TRAINING_SET).to_numpy()
 
     # Normalización de datos
