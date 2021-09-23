@@ -1,6 +1,7 @@
-import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+
+from train import *
 
 # Ruta al dataset de entrenamiento
 TRAINING_SET = 'training_set.csv'
@@ -28,8 +29,19 @@ def normalize(row):
     return 1 if all(in_range(row[i], i) for i in range(0, row.shape[0])) else 0
 
 
-def log_sig(net):
-    return 1 / (1 + np.exp(-net))
+def log_sig(net, derivative=False):
+    return 1 / (1 + np.exp(-net)) * (1 - 1 / (1 + np.exp(-net))) if derivative else 1 / (1 + np.exp(-net))
+
+
+def rectifier_linear_unit(x, derivative=False):
+    """
+    Función de activación rampa. Es análoga a la rectificación de media onda en electrónica
+
+    :param x: Neurona
+    :param derivative: Bandera que determina si debe utilizarse la derivada.
+    :return: Función de activación (o derivada) aplicada a la neurona.
+    """
+    return np.heaviside(x, 1) if derivative else np.maximum(x, 0)
 
 
 def perceptron(array):
@@ -62,6 +74,7 @@ if __name__ == "__main__":
     print('Output with sigmoid activator: ', perceptron(features))
 
     X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.30)
+    w1, b1, w2, b2, wOut, bOut, mu = train(X_train, Y_train, p=8, q=4, eta=0.0015)
 
     print('Training records:', Y_train.size)
     print('Test records:', Y_test.size)
