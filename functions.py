@@ -20,7 +20,7 @@ def normalize(row):
     :param row: Valores medios de entrada para cada sensor
     :return: 1 si la señal se encuentra dentro de los parámetros admitidos, cero en cualquier otro caso.
     """
-    return 1 if all(in_range(row[i], i) for i in range(0, row.shape[0])) else 0
+    return 1.00 if all(in_range(row[i], i) for i in range(0, row.shape[0])) else 0.00
 
 
 def log_sig(net, derivative=False):
