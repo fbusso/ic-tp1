@@ -1,6 +1,6 @@
 import numpy as np
 
-from main import rectifier_linear_unit, log_sig
+from functions import rectifier_linear_unit, log_sig
 
 
 def predict(X_test, w1, b1, w2, b2, wOut, bOut, mu):

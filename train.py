@@ -1,6 +1,6 @@
 import numpy as np
 
-from main import rectifier_linear_unit, log_sig
+from functions import rectifier_linear_unit, log_sig
 
 
 def train(X_train, Y_train, p=4, q=4, eta=0.0015):
