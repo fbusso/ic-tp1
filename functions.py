@@ -13,7 +13,7 @@ def in_range(value, index):
     return x[index] * 0.95 <= value <= x[index] * 1.05
 
 
-def normalize(row):
+def tag(row):
     """
     Devuelve el valor normalizado para conjunto de valores medios de los sensores de entrada.
 
