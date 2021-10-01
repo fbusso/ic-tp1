@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
-from functions import tag
+from functions import tag, distances, training_stats, diff
 
 # Ruta al dataset de entrenamiento
 TRAINING_SET = 'training_set.csv'
@@ -12,38 +12,35 @@ TRAINING_SET = 'training_set.csv'
 TEST_SIZE = 0.50
 
 
-def diff(a_ist, another_list):
-    different_indexes = []
-    x, = a_ist.shape
-    for i in range(0, x - 1):
-        if not a_ist[i] == another_list[i]:
-            different_indexes.append(i)
-
-    return different_indexes
-
-
-def cosine_similarity(a_list, another_list):
-    return np.dot(a_list, another_list) / (np.linalg.norm(a_list) * np.linalg.norm(another_list))
-
-
 if __name__ == "__main__":
-    ANDA_BIEN = (25, 10)
-    ANDA_MASO_MASO = (25, 5)
+    HIDDEN_LAYER_NEURONS = 25
 
     # Lectura del set de entrenamiento
     features = pd.read_csv(TRAINING_SET).to_numpy()
+    # features = get_dataset()
 
     # Normalización de datos
-    labels = np.array(list(map(lambda x: tag(x), features)))
+    labels = np.array(list(map(lambda row: tag(row), features)))
 
     # Separación del dataset de entrada en un set de entrenamiento y un set de pruebas
-    X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=TEST_SIZE)
-    clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=ANDA_MASO_MASO, random_state=1)
-    clf.fit(X_train, Y_train)
-    result = clf.predict(X_test)
-    print('RESULTADO ESPERADO', Y_test)
-    print('RESULTADO OBTENIDO', result)
+    X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.9)
+    classifier = MLPClassifier(solver='lbfgs', hidden_layer_sizes=(HIDDEN_LAYER_NEURONS,))
 
-    similarity = np.dot(Y_test, result) / (np.linalg.norm(Y_test) * np.linalg.norm(result))
-    print('PARECIDO', cosine_similarity(Y_test, result))
-    print('DIFERENCIAS', diff(Y_test, result))
+    training_stats = training_stats(Y_train)
+    classifier.fit(X_train, Y_train)
+    result = classifier.predict(X_test)
+
+    print('CANTIDAD DE MUESTRAS UTILIZADAS EN EL ENTRENAMIENTO', len(X_train))
+    print('PORCENTAJE DEL SET DE ENTRENAMIENTO QUE SE AJUSTA A LA POSICIÓN FIST: ', round(training_stats[0], 2), '%', sep='')
+    print('PORCENTAJE DEL SET DE ENTRENAMIENTO QUE NO SE AJUSTA A LA POSICIÓN FIST: ', round(training_stats[1], 2), '%', sep='')
+    print('CANTIDAD DE MUESTRAS A EVALUAR', len(X_test))
+    print('CANTIDAD TOTAL DE MUESTRAS', len(features))
+    # print('RESULTADO ESPERADO\n', Y_test)
+    # print('RESULTADO OBTENIDO\n', result)
+    print('DIFERENCIA ', 100 * len(diff(Y_test, result)) / len(Y_test), '%', sep='')
+
+    manhattan, chebyshev, jaccard, cosine = distances(Y_test, result)
+    print('DISTANCIA DE MANHATTAN', manhattan)
+    print('DISTANCIA DE CHEBYSHEV', chebyshev)
+    print('DISTANCIA DE JACCARD', jaccard)
+    print('SIMILITUD COSENO', cosine)

@@ -96,9 +96,20 @@ mediante señales electromiográficas}
         entre ellos.\\~\
 
         \hspace*{20pt}Proporciona un valor igual a 1 si el ángulo comprendido es cero. Cualquier ángulo existente entre los vectores, 
-        el coseno arrojaría un valor inferior a uno. \\~\
+        el coseno arrojaría un valor inferior a uno.
 
         \hspace*{20pt}\textit{\scriptsize{La similitud coseno no debe ser considerada como una métrica debido a que no cumple la desigualdad triangular.}}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Algoritmo L-BFGS}
+
+        \hspace*{20pt}Es un algoritmo de optimización de la familia de los métodos \textit{quasi-Newton} que aproxima al algoritmo 
+        (\textit{BFGS}) utilizando una cantidad limitada de memoria. Es un algoritmo muy popular de estimación de parámetros en Machine Learning.\\~\
+
+        \hspace*{20pt}Para cada iteración el algoritmo busca una aproximación de la inversa de la matriz Hessiana, almacenando solo unos pocos
+        vectores que representan a la aproximación implícitamente
+
     \end{frame}
 
     \begin{frame}
@@ -106,7 +117,7 @@ mediante señales electromiográficas}
 
         \hspace*{20pt}Suponiendo $n$ muestras de entrenamiento, $m$ características, $k$ capas ocultas cada una conteniendo $h$ 
         neuronas y, para simplificar, o neuronas en la capa de salida. La complejidad temporal de la propagación hacia atrás es 
-        $O(n*m*h^k*o*i)$, donde $i$ es el número de iteraciones.\\~\
+        $O(n*m*h^k*o*i)$, donde $i$ es el número de iteraciones. \\~\
         
         \hspace*{20pt}Dado que el método de \text{Backpropagation} tiene alta complejidad temporal, es recomendable comenzar con un número 
         bajo de neuronas en la capa oculta para el entrenamiento.
