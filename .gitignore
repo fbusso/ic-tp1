@@ -1,2 +1,13 @@
 .idea/
 venv/
+latext/.vscode
+
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.toc
+*.aux

@@ -1,0 +1,29 @@
+def in_range(value, index):
+    x = [0.0449, 0.0385, 0.0481, 0.0628, 0.0897, 0.0982, 0.0814, 0.0833]
+    return x[index] * 0.95 <= value <= x[index] * 1.05
+
+def tag(row):
+    return 1.00 if all(in_range(row[i], i) for i in range(0, row.shape[0])) else 0.00
+
+>>> import pandas as pd
+>>> import numpy as np
+>>> from functions import normalize
+>>> from sklearn.model_selection import train_test_split
+>>> features = pd.read_csv('training_set.csv').to_numpy()
+>>> labels = np.array(list(map(lambda x: normalize(x), features)))
+>>> X_train, X_test, Y_train, Y_test = train_test_split(features,
+                                                        labels,
+                                                        test_size=0.50)
+
+>>> from sklearn.neural_network import MLPClassifier
+>>> clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
+                        hidden_layer_sizes=(20, 10),
+                        random_state=1)
+
+>>> clf.fit(X_train, Y_train)
+MLPClassifier(alpha=1e-05, hidden_layer_sizes=(20, 10),
+              random_state=1,
+              solver='lbfgs')
+
+>>> clf.predict(Y_test)
+array([1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0])
